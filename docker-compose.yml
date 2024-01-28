@@ -4,9 +4,22 @@ services:
   gateway:
     build:
       context: ./gateway
-    container_name: gateway
+    container_name: api-gateway
+    env_file:
+      - ./gateway/.env
     ports:
       - '3000:3000'
     volumes:
       - ./gateway:/usr/src/app
+      - /usr/src/app/node_modules
+  auth:
+    build:
+      context: ./microservices/authentication
+    container_name: auth-services
+    env_file:
+      - ./microservices/authentication/.env
+    ports:
+      - '3001:3001'
+    volumes:
+      - ./microservices/authentication:/usr/src/app
       - /usr/src/app/node_modules
